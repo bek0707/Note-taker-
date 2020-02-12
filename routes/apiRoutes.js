@@ -1,9 +1,9 @@
-var noteContents = require("../db/noteContents")
+var noteContents = require("../db/db.json")
 
 //Create promise-based versions of functions using node style callbacks
-const fs = require("fs");
-const util = require("util");
-const writeFileAsync = util.promisify(fs.writeFile);
+var fs = require("fs");
+var util = require("util");
+var writeFileAsync = util.promisify(fs.writeFile);
 
 // Create a route
 module.exports = function(app) {
@@ -11,6 +11,7 @@ module.exports = function(app) {
     //Display all notes
     app.get("/api/notes", function(req, res) {
         res.json(noteContents);
+       // console.log("Inside get notes");
     });
 
     //Create new posts
@@ -18,11 +19,11 @@ module.exports = function(app) {
         // noteContents.push(req.body);
         // res.json(noteContents);
 
-        let newNote = req.body;
+        var newNote = req.body;
 
         // check to find last id in our notes json file, and assign the note to one greater than that id
-        let lastId = noteContents[noteContents.length - 1]["id"];
-        let newId = lastId + 1;
+        var lastId = noteContents[noteContents.length - 1]["id"];
+        var newId = lastId + 1;
         newNote["id"] = newId;
         
         console.log("Req.body:", req.body);
@@ -42,16 +43,16 @@ module.exports = function(app) {
         // console.log(chosen);
 
         console.log("Req.params:", req.params);
-        let chosenId = parseInt(req.params.id);
+        var chosenId = parseInt(req.params.id);
         console.log(chosenId);
 
 
-        for (let i = 0; i < noteContents.length; i++) {
+        for (var i = 0; i < noteContents.length; i++) {
             if (chosenId === noteContents[i].id) {
                 // delete noteContents[i];
                 noteContents.splice(i,1);
                 
-                let noteJSON = JSON.stringify(noteContents, null, 2);
+                var noteJSON = JSON.stringify(noteContents, null, 2);
 
                 writeFileAsync("./db/noteContents.json", noteJSON).then(function() {
                 console.log ("Chosen note has been deleted!");

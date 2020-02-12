@@ -5,7 +5,7 @@ var express = require("express");
 var app = express();
 
 // 3. Sets a port or run at 7000, Later listener will listen this
-var PORT = process.env.PORT || 7000;
+var PORT = process.env.PORT || 3030;
 
 //4. Use a middleware to parse the JSON data
 app.use(express.urlencoded({ extended: true}));
